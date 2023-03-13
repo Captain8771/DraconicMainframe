@@ -8,12 +8,12 @@ namespace CapSharp
     class CapSharp
     {
         static readonly Version version = new Version(0, 0, 1);
-        const string VersionSuffix = "unstable";
+        const string VersionSuffix = "testing";
         static async Task Main(string[] args)
         {
-            // TODO: unhardcode this
-            string token = "";
-            
+            // read the token from the environment variable "DISCORD_TOKEN"
+            string token = Environment.GetEnvironmentVariable("DISCORD_TOKEN") ?? throw new Exception("No token provided.");
+
             DiscordClient client = new DiscordClient(new DiscordConfiguration()
             {
                 Token = token,
@@ -22,8 +22,10 @@ namespace CapSharp
             });
 
             SlashCommandsExtension slash = client.UseSlashCommands();
+            // TODO: global commands
             slash.RegisterCommands<Commands.Dev>(841890589640359946);
             slash.RegisterCommands<Commands.Info>(841890589640359946);
+            slash.RegisterCommands<Commands.Misc>(841890589640359946);
 
             await client.ConnectAsync(
                 new DiscordActivity($"CapSharp v{version}-{VersionSuffix}", ActivityType.Playing),
