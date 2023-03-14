@@ -7,14 +7,14 @@ namespace CapSharp
 {
     class CapSharp
     {
-        static readonly Version version = new Version(0, 0, 1);
-        const string VersionSuffix = "testing";
+        private static readonly Version version = new Version(0, 0, 1);
+        private const string VersionSuffix = "testing";
         static async Task Main(string[] args)
         {
             // read the token from the environment variable "DISCORD_TOKEN"
             string token = Environment.GetEnvironmentVariable("DISCORD_TOKEN") ?? throw new Exception("No token provided.");
 
-            DiscordClient client = new DiscordClient(new DiscordConfiguration()
+            DiscordClient client = new(new()
             {
                 Token = token,
                 TokenType = TokenType.Bot,

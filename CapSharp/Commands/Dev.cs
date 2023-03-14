@@ -10,16 +10,5 @@ namespace CapSharp.Commands;
 [SlashRequireOwner]
 public class Dev : ApplicationCommandModule
 {
-    [SlashCommand("sync", "Syncs slash commands with discord.")]
-    public async Task SyncCommand(InteractionContext ctx)
-    {
-        ctx.Client.Logger.LogInformation("Syncing slash commands...");
-        ctx.SlashCommandsExtension.RegisterCommands<Info>();
-        ctx.SlashCommandsExtension.RegisterCommands<Dev>();
-        
-        await ctx.CreateResponseAsync(
-            InteractionResponseType.ChannelMessageWithSource,
-            new DiscordInteractionResponseBuilder().WithContent("Synced slash commands.")
-        );
-    }
+    // lol not yet
 }
