@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapSharp", "CapSharp\CapSharp.csproj", "{3153012B-7AC1-42C3-982A-99612987BA35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DraconicMainframe", "DraconicMainframe\DraconicMainframe.csproj", "{3153012B-7AC1-42C3-982A-99612987BA35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

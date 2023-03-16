@@ -1,16 +1,17 @@
-﻿using DSharpPlus;
+﻿using DraconicMainframe.Utils;
+using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using DSharpPlus.SlashCommands.Attributes;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace CapSharp.Commands;
+namespace DraconicMainframe.Commands;
 
 public class Dev : ApplicationCommandModule
 {
+    // this eval command was yoinked from https://github.com/naamloos/ModCore.
     [SlashCommand("eval", "Evaluate a C# expression.")]
-    [SlashRequireOwner]
+    [Checks.OwnerOnlyAttribute]
     public async Task EvalCS(InteractionContext context, [Option("code", "the code to execute")] string code)
     {
         await context.CreateResponseAsync(embed: new DiscordEmbedBuilder()
@@ -24,7 +25,7 @@ public class Dev : ApplicationCommandModule
 
             var scriptOptions = ScriptOptions.Default;
             scriptOptions = scriptOptions.WithImports("System", "System.Collections.Generic", "System.Linq",
-                "System.Text", "System.Threading.Tasks", "DSharpPlus");
+                "System.Text", "System.Threading.Tasks", "DSharpPlus", "DSharpPlus.Entities", "DraconicMainframe.Utils");
             scriptOptions = scriptOptions.WithReferences(AppDomain.CurrentDomain.GetAssemblies()
                 .Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location)));
 

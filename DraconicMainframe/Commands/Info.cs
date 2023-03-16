@@ -1,9 +1,9 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using static CapSharp.Utils.ExtensionMethods;
+using static DraconicMainframe.Utils.ExtensionMethods;
 
-namespace CapSharp.Commands;
+namespace DraconicMainframe.Commands;
 
 public class Info : ApplicationCommandModule
 {
@@ -28,7 +28,7 @@ public class Info : ApplicationCommandModule
             // so focus on that command
             
             // get the command from the slash command extension
-            ulong? id = CapSharp.guildId;
+            ulong? id = DraconicMainframe.GuildId;
             DiscordApplicationCommand? command = ctx.SlashCommandsExtension.RegisteredCommands
                 .First(kv => kv.Key == id)
                 // mfw i have to do this
@@ -50,9 +50,9 @@ public class Info : ApplicationCommandModule
                 .WithInvoker(ctx.User)
                 .WithTitle($"Help for {commandName}")
                 .WithDescription(helpString)
-                .WithColor(CapSharp.Config.Color)
+                .WithColor(DraconicMainframe.Config.Color)
                 .WithThumbnail(ctx.Client.CurrentUser.AvatarUrl)
-                .WithCapSharpAdvertising(ctx.Client)
+                .WithDraconicMainframeAdvertising(ctx.Client)
                 .Build();
 
             await ctx.EditResponseAsync(
@@ -63,7 +63,7 @@ public class Info : ApplicationCommandModule
         {
             // show a list of all commands and their descriptions
             string helpString = "";
-            IReadOnlyList<DiscordApplicationCommand> commands = ctx.SlashCommandsExtension.RegisteredCommands.First(kv => kv.Key == CapSharp.guildId).Value;
+            IReadOnlyList<DiscordApplicationCommand> commands = ctx.SlashCommandsExtension.RegisteredCommands.First(kv => kv.Key == DraconicMainframe.GuildId).Value;
             foreach (DiscordApplicationCommand command in commands)
             {
                 // make sure the command is a slash command and not a context menu
@@ -77,9 +77,9 @@ public class Info : ApplicationCommandModule
                 .WithInvoker(ctx.User)
                 .WithTitle("Help")
                 .WithDescription(helpString)
-                .WithColor(CapSharp.Config.Color)
+                .WithColor(DraconicMainframe.Config.Color)
                 .WithThumbnail(ctx.Client.CurrentUser.AvatarUrl)
-                .WithCapSharpAdvertising(ctx.Client)
+                .WithDraconicMainframeAdvertising(ctx.Client)
                 .Build();
 
             await ctx.EditResponseAsync(

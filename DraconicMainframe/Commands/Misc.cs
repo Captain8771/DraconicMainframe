@@ -4,7 +4,7 @@ using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Logging;
 using PronounDBLib;
 
-namespace CapSharp.Commands;
+namespace DraconicMainframe.Commands;
 
 public class Misc : ApplicationCommandModule
 {
