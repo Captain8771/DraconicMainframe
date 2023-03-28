@@ -116,4 +116,23 @@ public class ClydeServer : ApplicationCommandModule
                 .WithDescription("You will now be pinged for announcements."));
         }
     }
+
+    [SlashCommand("clear-threads", "removes you from every thread in the channel.")]
+    [Checks.ClydeServerOnlyAttribute]
+    public async Task ClearThreads(InteractionContext ctx)
+    {
+        ctx.Guild.Threads.Values
+            .Where(x => x.ParentId == ctx.Channel.Id)
+            .ToList()
+            .ForEach(async x =>
+            {
+                await x.RemoveThreadMemberAsync(ctx.Member);
+            });
+        
+        await ctx.CreateResponseAsync(new DiscordEmbedBuilder()
+            .WithInvoker(ctx.User)
+            .WithDraconicMainframeAdvertising(ctx.Client)
+            .WithTitle("Threads cleared!")
+            .WithDescription("You have been removed from every thread in this channel."));
+    }
 }
