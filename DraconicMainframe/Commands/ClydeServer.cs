@@ -121,20 +121,13 @@ public class ClydeServer : ApplicationCommandModule
     [Checks.ClydeServerOnlyAttribute]
     public async Task ClearThreads(InteractionContext ctx)
     {
-        var threads = ctx.Channel.Threads;
-        foreach (var thread in threads)
+        foreach (DiscordThreadChannel thread in ctx.Channel.Threads)
         {
-            // check if the user is in the thread
-            var member = thread.GetThreadMemberAsync(ctx.Member);
-
-            await ctx.CreateResponseAsync(new DiscordEmbedBuilder()
-                .WithInvoker(ctx.User)
-                .WithDraconicMainframeAdvertising(ctx.Client)
-                .WithTitle((member is null).ToString()));
-            return;
-
+            var members = await thread.ListJoinedMembersAsync();
+            if (members.Any(x => x.Id == ctx.User.Id))
+                await thread.RemoveThreadMemberAsync(ctx.Member);
         }
-        
+
         await ctx.CreateResponseAsync(new DiscordEmbedBuilder()
             .WithInvoker(ctx.User)
             .WithDraconicMainframeAdvertising(ctx.Client)
