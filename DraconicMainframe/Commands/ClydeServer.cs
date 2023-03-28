@@ -121,6 +121,8 @@ public class ClydeServer : ApplicationCommandModule
     [Checks.ClydeServerOnlyAttribute]
     public async Task ClearThreads(InteractionContext ctx)
     {
+        await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().AsEphemeral());
         foreach (DiscordThreadChannel thread in ctx.Channel.Threads)
         {
             var members = await thread.ListJoinedMembersAsync();
@@ -128,10 +130,11 @@ public class ClydeServer : ApplicationCommandModule
                 await thread.RemoveThreadMemberAsync(ctx.Member);
         }
 
-        await ctx.CreateResponseAsync(new DiscordEmbedBuilder()
-            .WithInvoker(ctx.User)
-            .WithDraconicMainframeAdvertising(ctx.Client)
-            .WithTitle("Threads cleared!")
-            .WithDescription("You have been removed from every thread in this channel."));
+        await ctx.EditResponseAsync(new DiscordWebhookBuilder()
+            .AddEmbed(new DiscordEmbedBuilder()
+                .WithInvoker(ctx.User)
+                .WithDraconicMainframeAdvertising(ctx.Client)
+                .WithTitle("Threads cleared!")
+                .WithDescription("You have been removed from every thread in this channel.")));
     }
 }
