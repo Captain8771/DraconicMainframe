@@ -122,7 +122,7 @@ public class ClydeServer : ApplicationCommandModule
     public async Task ClearThreads(InteractionContext ctx)
     {
         ctx.Guild.Threads.Values
-            .Where(x => x.ParentId == ctx.Channel.Id)
+            .Where(x => x.ParentId == ctx.Channel.Id && x.GetThreadMemberAsync(ctx.Member) is not null)
             .ToList()
             .ForEach(async x =>
             {
