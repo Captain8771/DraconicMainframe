@@ -2,6 +2,8 @@ using DraconicMainframe.Utils;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,6 +18,7 @@ public sealed class DraconicMainframeService : IHostedService
     private readonly IHostApplicationLifetime _applicationLifetime;
     public readonly ILogger<DraconicMainframeService> Logger;
     public readonly SlashCommandsExtension Slash;
+    public readonly InteractivityExtension Interactivity;
     
     public DraconicMainframeService(ILogger<DraconicMainframeService> logger, IHostApplicationLifetime applicationLifetime)
     {
@@ -31,11 +34,19 @@ public sealed class DraconicMainframeService : IHostedService
             LogUnknownEvents = false
         });
         Slash = Client.UseSlashCommands();
+        Interactivity = Client.UseInteractivity();
         
         // register commands
         Slash.RegisterCommands<Commands.Dev>(DraconicMainframe.GuildId);
         Slash.RegisterCommands<Commands.Info>(DraconicMainframe.GuildId);
         Slash.RegisterCommands<Commands.Misc>(DraconicMainframe.GuildId);
+        
+        // clyde-ai-funnies only
+        Slash.RegisterCommands<Commands.ClydeServer>(831542504951251014);
+        using (var db = new ClydeAIConfigContext())
+        {
+            db.Database.EnsureCreated();
+        }
         
         // register event handlers
         Client.Ready += async (c, e) =>
@@ -81,8 +92,7 @@ public sealed class DraconicMainframeService : IHostedService
                         .WithColor(DraconicMainframe.Config.Color)
                         .WithFooter("This is a bug. Bug has been reported, and a fix will be made.");
                 
-                    await e.Context.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-                        new DiscordInteractionResponseBuilder().AddEmbed(embed));
+                    await e.Context.Channel.SendMessageAsync(embed: embed);
                     Logger.LogError(e.Exception, "An error occurred while executing a slash command.");
                     DiscordChannel channel = await c.Client.GetChannelAsync(DraconicMainframe.Config.BugReportChannelId);
                     if (channel is null)

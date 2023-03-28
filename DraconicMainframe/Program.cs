@@ -14,7 +14,7 @@ namespace DraconicMainframe
     {
         [DontInject] public static readonly Version version = new Version(0, 0, 1);
         [DontInject] public static readonly string VersionSuffix = "testing";
-        [DontInject] public static ulong? GuildId = 841890589640359946;
+        [DontInject] public static ulong? GuildId = 820452671273172992;
         [DontInject] public static DraconicMainframeConfig Config = new()
         {
             Name = "CapSharp",
