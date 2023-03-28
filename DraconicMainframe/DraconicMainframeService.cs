@@ -28,7 +28,7 @@ public sealed class DraconicMainframeService : IHostedService
         {
             Token = Environment.GetEnvironmentVariable("DISCORD_TOKEN") ?? throw new Exception("No token provided."),
             TokenType = TokenType.Bot,
-            Intents = DiscordIntents.AllUnprivileged,
+            Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildMembers,
             LoggerFactory = new LoggerFactory().AddSerilog(),
             MinimumLogLevel = LogLevel.Warning,
             LogUnknownEvents = false
