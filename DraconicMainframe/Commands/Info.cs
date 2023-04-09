@@ -87,4 +87,23 @@ public class Info : ApplicationCommandModule
             );
         }
     }
+    
+    [SlashCommand("topic", "Send the channel topic.")]
+    public async Task TopicCommand(InteractionContext ctx,
+        [Option("raw", "Whether to send the raw topic or not.")] bool raw = false)
+    {
+        string topic = ctx.Channel.Topic ?? "No topic set.";
+        if (raw)
+            topic = $"```txt\n{topic}\n```";
+        
+        DiscordEmbed embed = new DiscordEmbedBuilder()
+            .WithInvoker(ctx.User)
+            .WithTitle("Topic")
+            .WithDescription(topic)
+            .WithColor(DraconicMainframe.Config.Color)
+            .WithDraconicMainframeAdvertising(ctx.Client)
+            .Build();
+        await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+            new DiscordInteractionResponseBuilder().AddEmbed(embed));
+    }
 }
